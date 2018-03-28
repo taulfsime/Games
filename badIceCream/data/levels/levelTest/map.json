@@ -1,0 +1,26 @@
+[
+	{
+		"block": "obstacle",
+		"type": "ice",
+		"posX": 1,
+		"posY": 1
+	},
+	{
+		"block": "obstacle",
+		"type": "ice",
+		"posX": 7,
+		"posY": 8
+	},
+	{
+		"block": "obstacle",
+		"type": "ice",
+		"posX": 11,
+		"posY": 3
+	},
+	{
+		"block": "obstacle",
+		"type": "ice",
+		"posX": 12,
+		"posY": 7
+	}
+]

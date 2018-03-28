@@ -1,0 +1,26 @@
+[
+	{
+		"object":"player",
+		"type":"brown",
+		"posX":5,
+		"posY":1
+	},
+	{
+		"object":"food",
+		"type":"banana",
+		"posX":1,
+		"posY":6
+	},
+	{
+		"object":"food",
+		"type":"banana",
+		"posX":11,
+		"posY":8
+	},
+	{
+		"object":"enemy",
+		"type":"first",
+		"posX":6,
+		"posY":3
+	}
+]
