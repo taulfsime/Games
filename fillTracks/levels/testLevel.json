@@ -1,0 +1,14 @@
+{
+	"info":
+	{
+		"name":"Test Level",
+		"author":"taulfsime"
+	},
+	"map":
+	[
+		{
+			"pos": [0, 0],
+			"isObstacle":false
+		}
+	]
+}
