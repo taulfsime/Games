@@ -2,6 +2,8 @@ class game
 {
   block[][] map;
   FACING move = null;
+  int playerAnimation = 0;
+  int blockWidth = 50;
   
   int w;
   int h;
@@ -9,8 +11,8 @@ class game
   game()
   {
     move = null;
-    w = width / 50;
-    h = height / 50;
+    w = width / blockWidth;
+    h = height / blockWidth;
     
     map = new block[w][h];
     
@@ -18,7 +20,7 @@ class game
     {
       for(int x = 0; x < w; x++)
       {
-        map[x][y] = new block(x, y, 50);
+        map[x][y] = new empty(new PVector(x, y), blockWidth);
       }
     }
     
@@ -26,12 +28,19 @@ class game
     {
       int rx = int(random(w));
       int ry = int(random(h));
-      map[rx][ry].setObstacle(true);
+      map[rx][ry] = new obstacle(new PVector(rx, ry), blockWidth);
+    }
+    
+    for(int a = 0; a < 10; a++)
+    {
+      int rx = int(random(w));
+      int ry = int(random(h));
+      map[rx][ry] = new logic(new PVector(rx, ry), blockWidth);
     }
     
     int rx = int(random(w));
     int ry = int(random(h));
-    map[rx][ry].setFill(true);
+    map[rx][ry] = new player(new PVector(rx, ry), blockWidth);
     map[rx][ry].setStatic(false);
   }
   
@@ -48,8 +57,8 @@ class game
   
   void render()
   {
-    if(move != null)
-    {
+    if(move != null && playerAnimation > 0)
+    {      
       int sx = int(getNonStatic().x);
       int sy = int(getNonStatic().y);
       
@@ -79,6 +88,12 @@ class game
         }
         break;
       }
+      
+      playerAnimation = 0;
+    }
+    else
+    {
+      playerAnimation++;
     }
     
     for(int y = 0; y < h; y++)
@@ -91,16 +106,17 @@ class game
   }
   
   void move(int x, int y, int x1, int y1)
-  {
-    if(x1 < 0 || x1 >= w || y1 < 0 || y1 >= h  || map[x1][y1].isFill || map[x1][y1].isObstacle)
+  { 
+    if(x1 < 0 || x1 >= w || y1 < 0 || y1 >= h  || !(map[x1][y1] instanceof empty))
     {
+      checkLogic(move);
       move = null;
       
       return;
     }
-        
+    
     map[x][y].setStatic(true);
-    map[x1][y1].setFill(true);
+    map[x1][y1] = new player(new PVector(x1, y1), blockWidth);
     connect(x, y, x1, y1);
   }
   
@@ -110,7 +126,7 @@ class game
     {
       for(int x = 0; x < w; x++)
       {
-        if(!map[x][y].isStatic && map[x][y].isFill)
+        if(!map[x][y].isStatic && map[x][y] instanceof player)
         {
           return new PVector(x, y);
         }
@@ -183,6 +199,51 @@ class game
       }
       break;
       
+    }
+  }
+  
+  void checkLogic(FACING f)
+  {
+    int x = int(getNonStatic().x);
+    int y = int(getNonStatic().y);
+        
+    switch(f)
+    {
+      case DOWN:
+      {
+        if(y < h - 1 && map[x][y + 1] instanceof logic)
+        {
+          map[x][y + 1] = new empty(new PVector(x, y + 1), blockWidth);
+        }
+      }
+      break;
+      
+      case UP:
+      {
+        if(y > 0 && map[x][y - 1] instanceof logic)
+        {
+          map[x][y - 1] = new empty(new PVector(x, y - 1), blockWidth);
+        }
+      }
+      break;
+      
+      case RIGHT:
+      {
+        if(x < w - 1 && map[x + 1][y] instanceof logic)
+        {
+          map[x + 1][y] = new empty(new PVector(x + 1, y), blockWidth);
+        }
+      }
+      break;
+      
+      case LEFT:
+      {
+        if(x > 0 && map[x - 1][y] instanceof logic)
+        {
+          map[x - 1][y] = new empty(new PVector(x - 1, y), blockWidth);
+        }
+      }
+      break;
     }
   }
 }

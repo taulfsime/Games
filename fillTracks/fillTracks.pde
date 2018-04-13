@@ -21,8 +21,9 @@ void keyPressed()
 }
 
 /*
- * 0 - empty 
- * 1 - map
+ * 0 - block 
+ * 1 - empty
  * 2 - obstacle
- * 3 - start point
+ * 5 - logic
+ * 4 - start point
 */
